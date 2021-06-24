@@ -90,7 +90,7 @@ class Menu extends Component {
       >
         <Sider theme="light" trigger={null}>
           <div className="logo">
-            <DogSvg style={{ marginBottom: '10px', marginRight: '5px' }} />
+            {/* <DogSvg style={{ marginBottom: '10px', marginRight: '5px' }} /> */}
             <h2>{i18n('app.title')}</h2>
           </div>
 
