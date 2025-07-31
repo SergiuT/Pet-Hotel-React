@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        folder: [".", "frontend", "backend"]  # Add paths with package.json
+        folder: [".", "frontend", "backend-firestore"]  # Add paths with package.json
 
     steps:
       - name: 📥 Checkout repo
