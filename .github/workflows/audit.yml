@@ -1,0 +1,32 @@
+# .github/workflows/npm-audit.yml
+name: NPM Audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  audit:
+    name: Run npm audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🛡️ Run npm audit
+        run: npm audit --audit-level=moderate
+
+      - name: ❌ Fail if vulnerabilities found
+        run: exit 1
+        if: failure()  # Make the job fail if npm audit fails
