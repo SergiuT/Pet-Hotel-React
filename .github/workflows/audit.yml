@@ -1,4 +1,3 @@
-# .github/workflows/npm-audit.yml
 name: NPM Audit
 
 on:
@@ -10,8 +9,12 @@ on:
 
 jobs:
   audit:
-    name: Run npm audit
+    name: Run npm audit in all workspaces
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        folder: [".", "frontend", "backend"]  # Add paths with package.json
 
     steps:
       - name: 📥 Checkout repo
@@ -22,21 +25,24 @@ jobs:
         with:
           node-version: '20'
 
-      - name: 📦 Install dependencies
+      - name: 📦 Install dependencies in ${{ matrix.folder }}
+        working-directory: ${{ matrix.folder }}
         run: npm ci
 
-      - name: 🛡️ Run npm audit and output results
+      - name: 🛡️ Run npm audit in ${{ matrix.folder }}
+        working-directory: ${{ matrix.folder }}
         run: |
-          echo "Running audit..."
+          echo "Running npm audit in ${{ matrix.folder }}..."
           npm audit --audit-level=moderate || true
         continue-on-error: true
 
-      - name: ❌ Fail if vulnerabilities found
+      - name: ❌ Fail if vulnerabilities found in ${{ matrix.folder }}
+        working-directory: ${{ matrix.folder }}
         run: |
           RESULT=$(npm audit --audit-level=moderate --json)
           COUNT=$(echo "$RESULT" | jq '.metadata.vulnerabilities | to_entries | map(select(.value > 0)) | length')
           echo "$RESULT" | jq
           if [ "$COUNT" -gt 0 ]; then
-            echo "❌ Found $COUNT vulnerabilities"
+            echo "❌ Found $COUNT vulnerabilities in ${{ matrix.folder }}"
             exit 1
           fi
