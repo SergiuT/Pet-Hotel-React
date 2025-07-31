@@ -1,0 +1,65 @@
+{
+  "name": "pet-hotel-react",
+  "version": "1.0.0",
+  "description": "A full-stack Pet Hotel management system built with React, Node.js, and Firebase",
+  "main": "index.js",
+  "scripts": {
+    "install:all": "npm install && cd frontend && npm install && cd ../backend-firestore && npm install",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:frontend": "cd frontend && npm start",
+    "dev:backend": "cd backend-firestore && npm start",
+    "build": "npm run build:frontend",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend-firestore && npm run build",
+    "test": "npm run test:frontend && npm run test:backend",
+    "test:frontend": "cd frontend && npm test",
+    "test:backend": "cd backend-firestore && npm test",
+    "deploy": "npm run deploy:frontend && npm run deploy:backend",
+    "deploy:frontend": "cd frontend && npm run deploy:production",
+    "deploy:backend": "cd backend-firestore && npm run deploy:production",
+    "deploy:development": "npm run deploy:frontend:dev && npm run deploy:backend:dev",
+    "deploy:frontend:dev": "cd frontend && npm run deploy:development",
+    "deploy:backend:dev": "cd backend-firestore && npm run deploy:development",
+    "firebase:use:development": "firebase use development",
+    "firebase:use:production": "firebase use production",
+    "firebase:deploy": "firebase deploy",
+    "firebase:deploy:hosting": "firebase deploy --only hosting",
+    "firebase:deploy:functions": "firebase deploy --only functions",
+    "firebase:deploy:storage": "firebase deploy --only storage",
+    "clean": "rm -rf node_modules frontend/node_modules backend-firestore/node_modules frontend/build",
+    "clean:install": "npm run clean && npm run install:all"
+  },
+  "keywords": [
+    "pet-hotel",
+    "react",
+    "nodejs",
+    "firebase",
+    "graphql",
+    "redux",
+    "ant-design",
+    "fullstack",
+    "javascript"
+  ],
+  "author": "Pet Hotel Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/pet-hotel-react.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/pet-hotel-react/issues"
+  },
+  "homepage": "https://pet-hotel-d5d51.firebaseapp.com/",
+  "devDependencies": {
+    "concurrently": "^6.2.0"
+  },
+  "workspaces": [
+    "frontend",
+    "backend-firestore"
+  ],
+  "engines": {
+    "node": ">=8.0.0",
+    "npm": ">=6.0.0"
+  },
+  "private": true
+} 
