@@ -25,9 +25,18 @@ jobs:
       - name: 📦 Install dependencies
         run: npm ci
 
-      - name: 🛡️ Run npm audit
-        run: npm audit --audit-level=moderate
+      - name: 🛡️ Run npm audit and output results
+        run: |
+          echo "Running audit..."
+          npm audit --audit-level=moderate || true
+        continue-on-error: true
 
       - name: ❌ Fail if vulnerabilities found
-        run: exit 1
-        if: failure()  # Make the job fail if npm audit fails
+        run: |
+          RESULT=$(npm audit --audit-level=moderate --json)
+          COUNT=$(echo "$RESULT" | jq '.metadata.vulnerabilities | to_entries | map(select(.value > 0)) | length')
+          echo "$RESULT" | jq
+          if [ "$COUNT" -gt 0 ]; then
+            echo "❌ Found $COUNT vulnerabilities"
+            exit 1
+          fi
