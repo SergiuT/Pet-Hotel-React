@@ -24,9 +24,19 @@ jobs:
         run: |
           trivy fs . --format json --output trivy-root.json || true
 
+      - name: Install deps (frontend)
+        run: |
+          cd frontend
+          npm ci
+
       - name: Scan frontend
         run: |
           trivy fs frontend --format json --output trivy-frontend.json || true
+
+      - name: Install deps (backend)
+        run: |
+          cd backend-firestore
+          npm ci
 
       - name: Scan backend
         run: |
