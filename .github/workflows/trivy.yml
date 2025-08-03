@@ -9,8 +9,8 @@ on:
 
 jobs:
   trivy-scan:
-    name: Run Trivy Scan
     runs-on: ubuntu-latest
+    name: Run Trivy Scan on All Subprojects
 
     steps:
       - name: Checkout repository
@@ -20,12 +20,23 @@ jobs:
         run: |
           curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
 
-      - name: Run Trivy FS scan
+      - name: Scan root (fallback - should be empty)
         run: |
-          trivy fs . --format json --output trivy-results.json || true
+          trivy fs . --format json --output trivy-root.json || true
+
+      - name: Scan frontend
+        run: |
+          trivy fs frontend --format json --output trivy-frontend.json || true
+
+      - name: Scan backend
+        run: |
+          trivy fs backend-firestore --format json --output trivy-backend.json || true
 
       - name: Upload Trivy Results
         uses: actions/upload-artifact@v4
         with:
           name: trivy-results
-          path: trivy-results.json
+          path: |
+            trivy-root.json
+            trivy-frontend.json
+            trivy-backend.json
